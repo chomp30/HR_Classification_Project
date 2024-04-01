@@ -1,4 +1,6 @@
 #Employee Attrition Analysis
+import pip
+pip.main(['install','seaborn'])
 import pandas as pd
 import numpy as np
 import seaborn as sns
@@ -7,8 +9,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
 import altair as alt
-import pip
-pip.main(['install','seaborn'])
+
 
 
 df=pd.read_csv("D:\\Work\\Aline\\Projet_HR_classification\\HR_Classification_Project\\Files\\WA_Fn-UseC_-HR-Employee-Attrition.csv")
