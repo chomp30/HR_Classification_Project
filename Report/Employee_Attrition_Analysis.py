@@ -136,4 +136,4 @@ if page==pages[1]:
   fig8, ax = plt.subplots(figsize = (15,15))
   sns.heatmap(cor, annot = True, ax = ax, cmap = "coolwarm")
   st.pyplot(fig8)
-
+  st.write("prout")
