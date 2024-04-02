@@ -1,7 +1,7 @@
 #Employee Attrition Analysis
 import pandas as pd
 import numpy as np
-import seaborn as sns
+#import seaborn as sns
 import matplotlib.pyplot as plt
 import plotly.express as px
 import plotly.graph_objects as go
@@ -56,13 +56,13 @@ if page==pages[1]:
   st.write("\n")
   st.write("First, I will dive into the distribution of the Age and Monthly Income variables.")
 
-  fig3= sns.displot(df_clean["Age"], kde=True,rug=True,bins=15,color="green")
-  plt.title=("Repartition of the variable : Age")
-  st.pyplot(fig3)
+  #fig3= sns.displot(df_clean["Age"], kde=True,rug=True,bins=15,color="green")
+  #plt.title=("Repartition of the variable : Age")
+  #st.pyplot(fig3)
 
-  fig4= sns.displot(df_clean["MonthlyIncome"], kde=True,bins=15, color="pink")
-  plt.title=("Repartition of the variable : Monthly Income")
-  st.pyplot(fig4)
+  #fig4= sns.displot(df_clean["MonthlyIncome"], kde=True,bins=15, color="pink")
+  #plt.title=("Repartition of the variable : Monthly Income")
+  #st.pyplot(fig4)
 
   st.write("Now, let's see how the Monthly income is acting towards other variables. Especially within the departments, then, following gender and years at company, to finish with marital status. Monthly Income is clearly an important variable to understand the attrition or the absence of it. We often believe that if the pay is higher, attrition is lower, we'll see if this applies here.")
   df_satisfaction=df_clean.groupby("Department").agg({"MonthlyIncome":"mean"})
@@ -84,12 +84,12 @@ if page==pages[1]:
 
   st.altair_chart(c, use_container_width=True)
 
-  fig2 = sns.catplot(x="Age",y="Gender",kind="box",col="Attrition", data=df_clean)
-  plt.figure(figsize=(10,10))
-  st.pyplot(fig2)
+  #fig2 = sns.catplot(x="Age",y="Gender",kind="box",col="Attrition", data=df_clean)
+  #plt.figure(figsize=(10,10))
+  #st.pyplot(fig2)
 
-  fig7 = sns.catplot(x="MaritalStatus", y="MonthlyIncome", kind="box", col="Attrition", data=df_clean)
-  st.pyplot(fig7)
+  #fig7 = sns.catplot(x="MaritalStatus", y="MonthlyIncome", kind="box", col="Attrition", data=df_clean)
+  #st.pyplot(fig7)
 
 
   sales_attrition=df_clean.loc[(df_clean['Department']=="Sales") & (df_clean['Attrition']==1)]
@@ -134,8 +134,8 @@ if page==pages[1]:
 #is a very good score compared to other tech companies today). We can note that it is not promotion that leads to attrition
 #as the mean of years since last promotion are very close but the gap is important when it comes to manager. Employees at risk
 #of attrition have spent half less time with their current manager than the employees who are staying
-  cor = df_clean_num.corr() 
-  fig8, ax = plt.subplots(figsize = (15,15))
-  sns.heatmap(cor, annot = True, ax = ax, cmap = "coolwarm")
-  st.pyplot(fig8)
+  #cor = df_clean_num.corr() 
+  #fig8, ax = plt.subplots(figsize = (15,15))
+  #sns.heatmap(cor, annot = True, ax = ax, cmap = "coolwarm")
+  #st.pyplot(fig8)
   st.write("Next")
