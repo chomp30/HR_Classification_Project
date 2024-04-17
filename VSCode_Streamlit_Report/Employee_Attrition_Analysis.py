@@ -99,6 +99,14 @@ if page==pages[1]:
   st.write("Let's see the number of employees concerned by attrition within the sales department:")
   st.write(len(sales_attrition))
 
+  hr_attrition=df_clean.loc[(df_clean['Department']=="Human Resources") & (df_clean['Attrition']==1)]
+  st.write("Let's see the number of employees concerned by attrition within the HR department:")
+  st.write(len(hr_attrition))
+
+  rd_attrition=df_clean.loc[(df_clean['Department']=="Research & Development") & (df_clean['Attrition']==1)]
+  st.write("Let's see the number of employees concerned by attrition within the R&D department:")
+  st.write(len(rd_attrition))
+
   job_satis=df_clean.groupby(['JobRole']).agg({"MonthlyIncome":"mean",
                                             "JobSatisfaction":"count"})
   job_satis.sort_values(by="JobSatisfaction", ascending=False)
@@ -122,6 +130,11 @@ if page==pages[1]:
   plt.title=("Job Role with the highest job satisfaction score")
   plt.legend(bbox_to_anchor=(1,1.1), loc="upper left")
   st.pyplot(fig6)
+  st.write("Sales Executive, Research Scientist and Lab Technician are the 3 job roles with the higher satisfaction score. HR are the ones with the lowest grade for job satisfaction.")
+
+  fig9=sns.catplot(x="Age", y="JobRole", hue="Attrition", kind="bar", data=df_clean)
+  plt.figure(figsize=(15,15))
+  st.pyplot(fig9)
 
   year_attrition=df_clean.groupby(['Attrition']).agg({"TotalWorkingYears":"mean",
                                                    'YearsSinceLastPromotion':"mean",
@@ -131,7 +144,7 @@ if page==pages[1]:
                                                    "Age":"mean"})
 
   st.dataframe(year_attrition)
-  st.write("In this DataFrame, I have done the average of each variable, so I can show the fact, on average younger workers, with less seniority are more at risk of attrition. An important point to note : the number of years since last promotion are pretty close wether it is an attrition risk or not, so it means that recognition seems not to be a key factor for attrition. Another important insight, the number of years with the current manager is higher when there are no attrition, it means that managers are a key variable for an employee to leave its job or not.")
+  st.write("In this DataFrame, I have done the average of each variable, so I can show the fact that, on average, younger workers with less seniority are more at risk of attrition. An important point to note : the number of years since last promotion are pretty close wether it is an attrition risk or not, so it means that recognition seems not to be a key factor for attrition. Another important insight, the number of years with the current manager is higher when there are no attrition, it means that managers are a key variable for an employee to decide to leave its job or not.")
 #Here we can see that the employees who are more at risk to leave the company are the younger ones, they have been in the role
 #since less time and within the company less years than the rest (by the way, an attrition after 5 years in the company
 #is a very good score compared to other tech companies today). We can note that it is not promotion that leads to attrition
@@ -141,4 +154,4 @@ if page==pages[1]:
   fig8, ax = plt.subplots(figsize = (15,15))
   sns.heatmap(cor, annot = True, ax = ax, cmap = "coolwarm")
   st.pyplot(fig8)
-  st.write("Next")
+  st.write("The heatmap is very unclear to read because no variables seem to be correlated to my target variable : attrition. Let's deep dive into dimension reduction in order to get the most important variable before processing a machine-learning model for classification.")
