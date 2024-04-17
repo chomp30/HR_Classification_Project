@@ -15,7 +15,7 @@ df_clean=pd.read_csv("D:\\Work\\Aline\\Projet_HR_classification\\HR_Classificati
 df_clean_num=pd.read_csv("D:\\Work\\Aline\\Projet_HR_classification\\HR_Classification_Project\\Files\\df_clean_num.csv")
 
 st.title("Attrition in HR : Analysis and Classification")
-st.image("D:\\Work\\Aline\\Projet_HR_classification\\HR_Classification_Project\\Report\\Attrition_image.jpg")
+st.image("D:\\Work\\Aline\\Projet_HR_classification\\HR_Classification_Project\\VSCode_Streamlit_Report\\Attrition_image.jpg")
 st.sidebar.title("Summary")
 pages=["Exploration","Data Visualization","Modelization", "Conclusion"]
 page=st.sidebar.radio("Go to", pages)
@@ -83,13 +83,16 @@ if page==pages[1]:
   )
 
   st.altair_chart(c, use_container_width=True)
+  
 
   fig2 = sns.catplot(x="Age",y="Gender",kind="box",col="Attrition", data=df_clean)
   plt.figure(figsize=(10,10))
   st.pyplot(fig2)
+  st.write("Here, we can see that the risk of attrition for women is on the average at 30 years old, whether for men it is around 32/33 years old. We can notice some outliers for women leaving the company at age 50 and plus")
 
   fig7 = sns.catplot(x="MaritalStatus", y="MonthlyIncome", kind="box", col="Attrition", data=df_clean)
   st.pyplot(fig7)
+  st.write("When looking at marital status by monthly income and separated by attrition, clearly the employee staying at the company have a higher monthly incomes for the 3 different marital status. The lowest average income for employee with attrition are for the single and divorced persons")
 
 
   sales_attrition=df_clean.loc[(df_clean['Department']=="Sales") & (df_clean['Attrition']==1)]
