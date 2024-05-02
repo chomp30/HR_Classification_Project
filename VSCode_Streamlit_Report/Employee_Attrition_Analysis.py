@@ -7,12 +7,14 @@ import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
 import altair as alt
-
+import joblib
 
 
 df=pd.read_csv("D:\\Work\\Aline\\Projet_HR_classification\\HR_Classification_Project\\Files\\WA_Fn-UseC_-HR-Employee-Attrition.csv")
 df_clean=pd.read_csv("D:\\Work\\Aline\\Projet_HR_classification\\HR_Classification_Project\\Files\\df_clean.csv")
 df_clean_num=pd.read_csv("D:\\Work\\Aline\\Projet_HR_classification\\HR_Classification_Project\\Files\\df_clean_num.csv")
+df_X_clean=pd.read_csv("D:\\Work\\Aline\\Projet_HR_classification\\HR_Classification_Project\\Files\\df_X_clean.csv")
+tsne_acp_df_clean=pd.read_csv("D:\\Work\\Aline\\Projet_HR_classification\\HR_Classification_Project\\Files\\tsne_acp_df_clean.csv")
 
 st.title("Attrition in HR : Analysis and Classification")
 st.image("D:\\Work\\Aline\\Projet_HR_classification\\HR_Classification_Project\\VSCode_Streamlit_Report\\Attrition_image.jpg")
@@ -155,3 +157,76 @@ if page==pages[1]:
   sns.heatmap(cor, annot = True, ax = ax, cmap = "coolwarm")
   st.pyplot(fig8)
   st.write("The heatmap is very unclear to read because no variables seem to be correlated to my target variable : attrition. Let's deep dive into dimension reduction in order to get the most important variable before processing a machine-learning model for classification.")
+if page==pages[2]:
+  st.write("### Modelization")
+  st.write("Before proposing a model, let's reduce the dimension of the dataset with PCA and T-SNE")
+  from sklearn.preprocessing import StandardScaler
+  scaler=StandardScaler()
+  Z=scaler.fit_transform(df_X_clean)
+  from sklearn.decomposition import PCA
+  pca=PCA()
+  coord=pca.fit_transform(Z)
+
+  fig10= plt.figure(figsize=(10,10))
+  plt.plot(np.arange(1,48), pca.explained_variance_)
+  plt.xlabel('Nombre de facteurs')
+  plt.ylabel("Valeurs propres")
+  st.pyplot(fig10)
+  st.write("The PCA explained variance shows that we have around 8 factors that are important.")
+  
+  st.write("Here we can understand which variables are important for the attrition target.")
+  size=len(df_X_clean.columns)
+  racine_valeurs_propres=np.sqrt(pca.explained_variance_)
+  corvar=np.zeros((size,size))
+  for k in range(size):
+      corvar[:,k]=pca.components_[:,k]*racine_valeurs_propres[k]
+    
+  fig,axes=plt.subplots(figsize=(20,20))
+  axes.set_xlim(-1,1)
+  axes.set_ylim(-1,1)
+
+  for j in range(size):
+      plt.annotate(df_X_clean.columns[j],(corvar[j,0]*0.8,corvar[j,1]*0.8), color='red')
+      plt.arrow(0,0,corvar[j,0]*0.6, corvar[j,1]*0.6, alpha=0.5, head_width=0.03, color="b")
+    
+  plt.plot([-1,1],[0,0], color="silver", linestyle="-", linewidth=1)
+  plt.plot([0,0],[-1,1], color="silver", linestyle='-', linewidth=1)
+
+  cercle=plt.Circle((0,0),1, color="green",fill=False)
+  axes.add_artist(cercle)
+  plt.xlabel("PC 1")
+  plt.ylabel("PC 2")
+  st.pyplot(fig)
+
+  st.write("Let's combine the T-SNE with PCA and visualize the positions of the different employees at risk of attrition or not:")
+  
+  fig11=plt.figure(figsize=(10,10))
+  sns.scatterplot(x="Axe 1", y="Axe 2", hue="Target", data=tsne_acp_df_clean)
+  st.pyplot(fig11)
+
+  st.write("So, the people at risk of attrition are mostly in the bottom left area of the graphic and at the top. In that cases the variables regarding the number of years with current manager, years at company, gender as well as performance ratings & satisfaction are key variables here.")
+  st.write("We still have some outliers of attrition in other areas but the point of focus should be the variables quoted above.")
+
+  # Liste déroulante
+  no_model = "Select a model"
+  model_1 = "Decision Tree Classifier - Max Depth 4"
+  model_2 = "Balanced Random Forest"
+  model_3 = "Logistic Regression"
+  model_options = [no_model, model_1, model_2, model_3]
+  selected_model = st.selectbox('Selection du modèle:', model_options)
+
+  # Si sélection d'un modèle
+  if selected_model != no_model:
+        
+      # Variables
+      if selected_model == model_1:
+          model_type = "Decision Tree Classifier - Max Depth 4"
+          model_depth = "4"
+          model_loaded = joblib.load("DecisionTreeClassifier_attrition.joblib")
+      if selected_model == model_2:
+          model_type = "Balanced Random Forest"
+          model_depth = "4"
+          model_loaded = joblib.load("BalancedRandomForestClassifier.joblib")
+      if selected_model == model_3:
+          model_type = "Logistic Regression"
+          model_loaded = joblib.load("LogisticRegression.joblib")
