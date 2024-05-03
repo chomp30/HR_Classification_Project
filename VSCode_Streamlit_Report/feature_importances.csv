@@ -1,0 +1,47 @@
+Variable,Importance
+MonthlyIncome,0.25246778006013687
+OverTime,0.24830163371542277
+MaritalStatus_Single,0.1267558370459746
+TotalWorkingYears,0.0851005086679449
+JobLevel,0.06608617049798338
+YearsSinceLastPromotion,0.047202823720219216
+BusinessTravel_Travel_Frequently,0.043553546671184176
+JobSatisfaction,0.035112200859636365
+YearsAtCompany,0.029470709753692526
+StockOptionLevel,0.027855437457148198
+DistanceFromHome,0.021331682877894477
+JobRole_Research Scientist,0.01676166867276254
+JobRole_Laboratory Technician,0.0
+EducationField_Marketing,0.0
+EducationField_Medical,0.0
+EducationField_Other,0.0
+EducationField_Technical Degree,0.0
+JobRole_Healthcare Representative,0.0
+JobRole_Human Resources,0.0
+JobRole_Manager,0.0
+EducationField_Human Resources,0.0
+JobRole_Manufacturing Director,0.0
+JobRole_Research Director,0.0
+JobRole_Sales Executive,0.0
+JobRole_Sales Representative,0.0
+MaritalStatus_Divorced,0.0
+MaritalStatus_Married,0.0
+EducationField_Life Sciences,0.0
+Department_Research & Development,0.0
+Department_Sales,0.0
+TrainingTimesLastYear,0.0
+NumCompaniesWorked,0.0
+Gender,0.0
+PercentSalaryHike,0.0
+PerformanceRating,0.0
+RelationshipSatisfaction,0.0
+EnvironmentSatisfaction,0.0
+WorkLifeBalance,0.0
+JobInvolvement,0.0
+YearsInCurrentRole,0.0
+Education,0.0
+YearsWithCurrManager,0.0
+BusinessTravel_Non-Travel,0.0
+BusinessTravel_Travel_Rarely,0.0
+Department_Human Resources,0.0
+Age,0.0
