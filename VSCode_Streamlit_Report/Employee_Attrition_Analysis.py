@@ -10,14 +10,14 @@ import altair as alt
 import joblib
 from sklearn.metrics import classification_report
 
-df=pd.read_csv("HR_Classification_Project\\Files\\WA_Fn-UseC_-HR-Employee-Attrition.csv")
-df_clean=pd.read_csv("HR_Classification_Project\\Files\\df_clean.csv")
-df_clean_num=pd.read_csv("HR_Classification_Project\\Files\\df_clean_num.csv")
-df_X_clean=pd.read_csv("HR_Classification_Project\\Files\\df_X_clean.csv")
-tsne_acp_df_clean=pd.read_csv("HR_Classification_Project\\Files\\tsne_acp_df_clean.csv")
+df=pd.read_csv("VSCode_Streamlit_Report/WA_Fn-UseC_-HR-Employee-Attrition.csv")
+df_clean=pd.read_csv("VSCode_Streamlit_Report/df_clean.csv")
+df_clean_num=pd.read_csv("VSCode_Streamlit_Report/df_clean_num.csv")
+df_X_clean=pd.read_csv("VSCode_Streamlit_Report/df_X_clean.csv")
+tsne_acp_df_clean=pd.read_csv("VSCode_Streamlit_Report/tsne_acp_df_clean.csv")
 
 st.title("Attrition in HR : Analysis and Classification")
-st.image("HR_Classification_Project\\VSCode_Streamlit_Report\\Attrition_image.jpg")
+st.image("VSCode_Streamlit_Report/Attrition_image.jpg")
 
 st.sidebar.title("Summary")
 pages=["Exploration","Data Visualization","Modelization", "Conclusion"]
@@ -224,18 +224,18 @@ if page==pages[2]:
       if selected_model == model_1:
           model_type = "Decision Tree Classifier - Max Depth 4"
           model_depth = "4"
-          model_loaded = joblib.load("HR_Classification_Project\\VSCode_Streamlit_Report\\DecisionTreeClassifier_attrition.joblib")
-          model_loaded2= joblib.load("HR_Classification_Project\\VSCode_Streamlit_Report\\DecisionTreeClassifier_pred.joblib")
+          model_loaded = joblib.load("VSCode_Streamlit_Report/DecisionTreeClassifier_attrition.joblib")
+          model_loaded2= joblib.load("VSCode_Streamlit_Report/DecisionTreeClassifier_pred.joblib")
       if selected_model == model_2:
           model_type = "Balanced Random Forest"
           model_depth = "4"
-          model_loaded = joblib.load("HR_Classification_Project\\VSCode_Streamlit_Report\\BalancedRandomForestClassifier.joblib")
-          model_loaded2=joblib.load("HR_Classification_Project\\VSCode_Streamlit_Report\\BalancedRandomForest_pred.joblib")
+          model_loaded = joblib.load("VSCode_Streamlit_Report/BalancedRandomForestClassifier.joblib")
+          model_loaded2=joblib.load("VSCode_Streamlit_Report/BalancedRandomForest_pred.joblib")
       if selected_model == model_3:
           model_type = "Logistic Regression"
           model_depth = "Max"
-          model_loaded = joblib.load("HR_Classification_Project\\VSCode_Streamlit_Report\\LogisticRegression.joblib")
-          model_loaded2=joblib.load("HR_Classification_Project\\VSCode_Streamlit_Report\\LogisticRegression_pred.joblib")
+          model_loaded = joblib.load("VSCode_Streamlit_Report/LogisticRegression.joblib")
+          model_loaded2=joblib.load("VSCode_Streamlit_Report/LogisticRegression_pred.joblib")
       # Présentation du Modèle
       st.write('### Model Selected')
       st.write('Model Type:', model_type)
@@ -250,15 +250,15 @@ if page==pages[2]:
        # Feature Importances Matrix
       if FeatImp_button_status == True:
           st.write('### Feature Importances Matrix')
-          X_train_columns = joblib.load("HR_Classification_Project\\VSCode_Streamlit_Report\\X_train_columns")
+          X_train_columns = joblib.load("VSCode_Streamlit_Report/X_train_columns")
           feature_importances = pd.DataFrame({'Variable' : X_train_columns, 'Importance' : model_loaded.feature_importances_}).sort_values('Importance', ascending = False)
           st.dataframe(feature_importances[feature_importances['Importance'] > 0.02])
       # Chargement du jeu de test
       if Xtest_button_status == True:
-          X_test = joblib.load("HR_Classification_Project\\VSCode_Streamlit_Report\\X_test.joblib")
+          X_test = joblib.load("VSCode_Streamlit_Report/X_test.joblib")
           # X_test = pd.read_csv("Streamlit/vgsales_RandomForestReg_Xtest.csv", index_col = 0)
-          y_test = joblib.load("HR_Classification_Project\\VSCode_Streamlit_Report\\y_test.joblib")
-          X_test_decoded = pd.read_csv("HR_Classification_Project\\VSCode_Streamlit_Report\\X_test.csv", index_col = 0)
+          y_test = joblib.load("VSCode_Streamlit_Report/y_test.joblib")
+          X_test_decoded = pd.read_csv("VSCode_Streamlit_Report/X_test.csv", index_col = 0)
           st.write('### Presentation of the test sample')
           st.write('Number of employees listed:', X_test.shape[0])
           st.write("Extract from the encoded dataset:")
