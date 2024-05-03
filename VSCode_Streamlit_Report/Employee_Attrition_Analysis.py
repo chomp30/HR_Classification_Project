@@ -8,7 +8,7 @@ import plotly.graph_objects as go
 import streamlit as st
 import altair as alt
 import joblib
-
+from sklearn.metrics import classification_report
 
 df=pd.read_csv("D:\\Work\\Aline\\Projet_HR_classification\\HR_Classification_Project\\Files\\WA_Fn-UseC_-HR-Employee-Attrition.csv")
 df_clean=pd.read_csv("D:\\Work\\Aline\\Projet_HR_classification\\HR_Classification_Project\\Files\\df_clean.csv")
@@ -18,14 +18,16 @@ tsne_acp_df_clean=pd.read_csv("D:\\Work\\Aline\\Projet_HR_classification\\HR_Cla
 
 st.title("Attrition in HR : Analysis and Classification")
 st.image("D:\\Work\\Aline\\Projet_HR_classification\\HR_Classification_Project\\VSCode_Streamlit_Report\\Attrition_image.jpg")
+
 st.sidebar.title("Summary")
 pages=["Exploration","Data Visualization","Modelization", "Conclusion"]
 page=st.sidebar.radio("Go to", pages)
-st.write("The gradual erosion of motivation, the loss of a sense of belonging to a corporate culture, the gradual disengagement of employees, sometimes leading to voluntary departures, are all factors in the attrition phenomenon.")
-st.write("Since Covid, companies from all sectors are more and more looking into reasons of attrition and how to prevent it before it happens. With this work, my aim is to find the reasons of attrition and predict if an employee is at risk in order to help managers and companies to find solutions.")
+
 
 
 if page==pages[0]:
+  st.write("The gradual erosion of motivation, the loss of a sense of belonging to a corporate culture, the gradual disengagement of employees, sometimes leading to voluntary departures, are all factors in the attrition phenomenon.")
+  st.write("Since Covid, companies from all sectors are more and more looking into reasons of attrition and how to prevent it before it happens. With this work, my aim is to find the reasons of attrition and predict if an employee is at risk in order to help managers and companies to find solutions.")
   st.write("### Exploration")
   st.write("My dataset is composed of the following DataFrame :")
   st.dataframe(df.head(15))
@@ -223,18 +225,21 @@ if page==pages[2]:
           model_type = "Decision Tree Classifier - Max Depth 4"
           model_depth = "4"
           model_loaded = joblib.load("D:\\Work\Aline\\Projet_HR_classification\\HR_Classification_Project\\VSCode_Streamlit_Report\\DecisionTreeClassifier_attrition.joblib")
+          model_loaded2= joblib.load("D:\\Work\Aline\\Projet_HR_classification\\HR_Classification_Project\\VSCode_Streamlit_Report\\DecisionTreeClassifier_pred.joblib")
       if selected_model == model_2:
           model_type = "Balanced Random Forest"
           model_depth = "4"
           model_loaded = joblib.load("D:\\Work\Aline\\Projet_HR_classification\\HR_Classification_Project\\VSCode_Streamlit_Report\\BalancedRandomForestClassifier.joblib")
+          model_loaded2=joblib.load("D:\\Work\Aline\\Projet_HR_classification\\HR_Classification_Project\\VSCode_Streamlit_Report\\BalancedRandomForest_pred.joblib")
       if selected_model == model_3:
           model_type = "Logistic Regression"
           model_depth = "Max"
           model_loaded = joblib.load("D:\\Work\Aline\\Projet_HR_classification\\HR_Classification_Project\\VSCode_Streamlit_Report\\LogisticRegression.joblib")
+          model_loaded2=joblib.load("D:\\Work\Aline\\Projet_HR_classification\\HR_Classification_Project\\VSCode_Streamlit_Report\\LogisticRegression_pred.joblib")
       # Présentation du Modèle
-      st.write('### Présentation du modèle')
-      st.write('Type de Modèle:', model_type)
-      st.write('Profondeur:', model_depth)
+      st.write('### Model Selected')
+      st.write('Model Type:', model_type)
+      st.write('Model Depth:', model_depth)
 
       # Checkbox
       st.write("### Options:")
@@ -252,7 +257,7 @@ if page==pages[2]:
       if Xtest_button_status == True:
           X_test = joblib.load("D:\\Work\Aline\\Projet_HR_classification\\HR_Classification_Project\\VSCode_Streamlit_Report\\X_test.joblib")
           # X_test = pd.read_csv("Streamlit/vgsales_RandomForestReg_Xtest.csv", index_col = 0)
-          y_test = pd.read_csv("D:\\Work\\Aline\\Projet_HR_classification\\HR_Classification_Project\\VSCode_Streamlit_Report\\y_test.csv", index_col = 0)
+          y_test = joblib.load("D:\\Work\Aline\\Projet_HR_classification\\HR_Classification_Project\\VSCode_Streamlit_Report\\y_test.joblib")
           X_test_decoded = pd.read_csv("D:\\Work\\Aline\\Projet_HR_classification\\HR_Classification_Project\\VSCode_Streamlit_Report\\X_test.csv", index_col = 0)
           st.write('### Presentation of the test sample')
           st.write('Number of employees listed:', X_test.shape[0])
@@ -263,7 +268,7 @@ if page==pages[2]:
           pred_button_status = st.button("Make a prediction")
 
           if pred_button_status == True:
-              st.write("Accuracy score:", model_loaded.score(X_test, y_test))
+              st.write("Accuracy Score", model_loaded.score(X_test, y_test))
               y_pred = model_loaded.predict(X_test)
               X_test_decoded['Attrition - Predicted'] = y_pred
               X_test_decoded['Attrition - Real'] = y_test
@@ -272,9 +277,49 @@ if page==pages[2]:
               col21, col22 = st.columns(2)
 
               with col21:
-                  st.write("##### Top 100 des prédictions")
-                  st.dataframe(X_test_decoded.nsmallest(100, 'Squared Error'))
+                  st.write("##### Top 15 of best predictions")
+                  st.dataframe(X_test_decoded.nsmallest(15, 'Squared Error'))
 
               with col22:
-                  st.write("##### Flop 100 des prédictions")
-                  st.dataframe(X_test_decoded.nlargest(100, 'Squared Error'))
+                  st.write("##### Top 15 of failed predictions")
+                  st.dataframe(X_test_decoded.nlargest(15, 'Squared Error'))
+              
+              st.write("##### Classification report")
+              st.dataframe(classification_report(y_test, y_pred, output_dict=True))
+
+        # Faire une prédiction personnalisée
+      if PersPred_button_status == True:
+
+        # Définition des valeurs
+          MonthlyIncome_options = [Income for Income in range(1000,20000)]
+          Gender_options = [0, 1]
+          JobLevel_options = [1,2,3,4,5]
+          TotalWorkingYears_options = [Year for Year in range(0,40)]
+          YearsWithManager_options = [Year for Year in range(0,17)]
+          Age_options = [Age for Age in range(18, 65)]
+
+          input_MonthlyIncome = st.select_slider("Monthly Income", MonthlyIncome_options)
+          input_Gender= st.selectbox("Gender", Gender_options)
+          input_JobLevel = st.selectbox("Job Level", JobLevel_options)
+          input_TotalWorkingYears = st.select_slider("Total Working Years", TotalWorkingYears_options)
+          input_YearsWithManager = st.select_slider("Years with Current Manager", YearsWithManager_options)
+          input_Age = st.select_slider("Age", Age_options)
+
+# Faire une prédiction
+          perspred_button_status = st.button("Faire une prédiction")
+
+          if perspred_button_status == True:
+              df_X_clean_pred=pd.DataFrame({"Age":input_Age,
+                                            "Gender":input_Gender,
+                                             "JobLevel": input_JobLevel,
+                                             "TotalWorkingYears":input_TotalWorkingYears,
+                                             "MonthlyIncome":input_MonthlyIncome,
+                                              "YearsWithCurrManager":input_YearsWithManager}, index=[0])
+              
+              st.write("##### Summary")
+              st.dataframe(df_X_clean_pred)
+
+            # Prédiction
+              y_perso_pred = int(np.round(model_loaded2.predict(df_X_clean_pred))[0])
+              y_perso_pred = "{:,.0f}".format(y_perso_pred)
+              st.metric("Predicted Attrition", y_perso_pred)
