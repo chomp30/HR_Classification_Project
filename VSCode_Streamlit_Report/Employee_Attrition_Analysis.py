@@ -222,11 +222,59 @@ if page==pages[2]:
       if selected_model == model_1:
           model_type = "Decision Tree Classifier - Max Depth 4"
           model_depth = "4"
-          model_loaded = joblib.load("DecisionTreeClassifier_attrition.joblib")
+          model_loaded = joblib.load("D:\\Work\Aline\\Projet_HR_classification\\HR_Classification_Project\\VSCode_Streamlit_Report\\DecisionTreeClassifier_attrition.joblib")
       if selected_model == model_2:
           model_type = "Balanced Random Forest"
           model_depth = "4"
-          model_loaded = joblib.load("BalancedRandomForestClassifier.joblib")
+          model_loaded = joblib.load("D:\\Work\Aline\\Projet_HR_classification\\HR_Classification_Project\\VSCode_Streamlit_Report\\BalancedRandomForestClassifier.joblib")
       if selected_model == model_3:
           model_type = "Logistic Regression"
-          model_loaded = joblib.load("LogisticRegression.joblib")
+          model_depth = "Max"
+          model_loaded = joblib.load("D:\\Work\Aline\\Projet_HR_classification\\HR_Classification_Project\\VSCode_Streamlit_Report\\LogisticRegression.joblib")
+      # Présentation du Modèle
+      st.write('### Présentation du modèle')
+      st.write('Type de Modèle:', model_type)
+      st.write('Profondeur:', model_depth)
+
+      # Checkbox
+      st.write("### Options:")
+      FeatImp_button_status = st.checkbox("Showcase the Feature Importances")
+      Xtest_button_status = st.checkbox("Charge a test sample and make a prediction")
+      PersPred_button_status = st.checkbox("Create a personalized prediction")
+
+       # Feature Importances Matrix
+      if FeatImp_button_status == True:
+          st.write('### Feature Importances Matrix')
+          X_train_columns = joblib.load("D:\\Work\Aline\\Projet_HR_classification\\HR_Classification_Project\\VSCode_Streamlit_Report\\X_train_columns")
+          feature_importances = pd.DataFrame({'Variable' : X_train_columns, 'Importance' : model_loaded.feature_importances_}).sort_values('Importance', ascending = False)
+          st.dataframe(feature_importances[feature_importances['Importance'] > 0.02])
+      # Chargement du jeu de test
+      if Xtest_button_status == True:
+          X_test = joblib.load("D:\\Work\Aline\\Projet_HR_classification\\HR_Classification_Project\\VSCode_Streamlit_Report\\X_test.joblib")
+          # X_test = pd.read_csv("Streamlit/vgsales_RandomForestReg_Xtest.csv", index_col = 0)
+          y_test = pd.read_csv("D:\\Work\\Aline\\Projet_HR_classification\\HR_Classification_Project\\VSCode_Streamlit_Report\\y_test.csv", index_col = 0)
+          X_test_decoded = pd.read_csv("D:\\Work\\Aline\\Projet_HR_classification\\HR_Classification_Project\\VSCode_Streamlit_Report\\X_test.csv", index_col = 0)
+          st.write('### Presentation of the test sample')
+          st.write('Number of employees listed:', X_test.shape[0])
+          st.write("Extract from the encoded dataset:")
+          st.dataframe(X_test.head(5))
+
+          # Prédiction sur jeu de test
+          pred_button_status = st.button("Make a prediction")
+
+          if pred_button_status == True:
+              st.write("Accuracy score:", model_loaded.score(X_test, y_test))
+              y_pred = model_loaded.predict(X_test)
+              X_test_decoded['Attrition - Predicted'] = y_pred
+              X_test_decoded['Attrition - Real'] = y_test
+              X_test_decoded['Squared Error'] = (X_test_decoded["Attrition - Predicted"] - X_test_decoded["Attrition - Real"]) ** 2
+
+              col21, col22 = st.columns(2)
+
+              with col21:
+                  st.write("##### Top 100 des prédictions")
+                  st.dataframe(X_test_decoded.nsmallest(100, 'Squared Error'))
+
+              with col22:
+                  st.write("##### Flop 100 des prédictions")
+                  st.dataframe(X_test_decoded.nlargest(100, 'Squared Error'))
