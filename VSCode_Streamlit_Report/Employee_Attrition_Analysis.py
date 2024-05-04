@@ -323,3 +323,9 @@ if page==pages[2]:
               y_perso_pred = int(np.round(model_loaded2.predict(df_X_clean_pred))[0])
               y_perso_pred = "{:,.0f}".format(y_perso_pred)
               st.metric("Predicted Attrition", y_perso_pred)
+
+              st.write("##### Classification report")
+              st.dataframe(classification_report(y_test, y_perso_pred, output_dict=True))
+
+if page==pages[3]:
+  st.write("### Conclusion")
