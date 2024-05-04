@@ -324,10 +324,8 @@ if page==pages[2]:
               y_perso_pred = "{:,.0f}".format(y_perso_pred)
               st.metric("Predicted Attrition", y_perso_pred)
 
-              st.write("##### Classification report")
               target = pd.read_csv("VSCode_Streamlit_Report/target.csv")
-              
-              st.dataframe(classification_report(target[0], y_perso_pred, output_dict=True))
+              st.write("Accuracy Score", model_loaded2.score(target, y_perso_pred))
 
 if page==pages[3]:
   st.write("### Conclusion")
