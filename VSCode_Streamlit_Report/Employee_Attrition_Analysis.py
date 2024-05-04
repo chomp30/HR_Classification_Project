@@ -325,6 +325,7 @@ if page==pages[2]:
               st.metric("Predicted Attrition", y_perso_pred)
 
               st.write("##### Classification report")
+              y_test = joblib.load("VSCode_Streamlit_Report/y_test.joblib")
               st.dataframe(classification_report(y_test, y_perso_pred, output_dict=True))
 
 if page==pages[3]:
