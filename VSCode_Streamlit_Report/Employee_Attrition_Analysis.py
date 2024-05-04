@@ -73,12 +73,12 @@ if page==pages[1]:
   st.write("Now, let's see how the Monthly income is acting towards other variables. Especially within the departments, then, following gender and years at company, to finish with marital status. Monthly Income is clearly an important variable to understand the attrition or the absence of it. We often believe that if the pay is higher, attrition is lower, we'll see if this applies here.")
   df_satisfaction=df_clean.groupby("Department").agg({"MonthlyIncome":"mean"})
   st.write(df_satisfaction.sort_values(by="MonthlyIncome", ascending=False))
-  st.write("Here, the mean of monthly income per department is quite even, Sales department has the highest mean, followed by HR and R&D department.")
+  st.write("Here, the average of monthly income per department is quite even, Sales department has the highest mean, followed by HR and R&D department.")
 
   fig=px.area(df_clean, x="MonthlyIncome", y="YearsAtCompany", color="Gender",title='Monthly Income per years at company and gender')
   fig.update_traces(textposition="bottom center")
   st.plotly_chart(fig, theme=None, use_container_width=True)
-  st.write("This graph is very interesting as it showcases that the highest incomes are clearly for men but are not particularly linked to the years within the company.")
+  st.write("This graph is very interesting as it showcases that the highest incomes are for men (and we saw that there are more men than women in the company) but are not totally linked to the years within the company. Some employees who arrived less that a year in the company can get top salaries.")
 
   st.write("Let's map the composition of the workforce in this company by looking at its seniority and current position:")
   chart_data = df_clean
