@@ -78,7 +78,7 @@ if page==pages[1]:
   fig=px.area(df_clean, x="MonthlyIncome", y="YearsAtCompany", color="Gender",title='Monthly Income per years at company and gender')
   fig.update_traces(textposition="bottom center")
   st.plotly_chart(fig, theme=None, use_container_width=True)
-  st.write("This graph is very interesting as it showcases that the highest incomes are for men (and we saw that there are more men than women in the company) but are not totally linked to the years within the company. Some employees who arrived less that a year in the company can get top salaries.")
+  st.write("This graph is very interesting as it showcases that the highest incomes are for men (and we saw that there are more men than women in the company) but are not totally linked to the years within the company. Some employees who arrived less than a year ago in the company can reach the highest salaries.")
 
   st.write("Let's map the composition of the workforce in this company by looking at its seniority and current position:")
   chart_data = df_clean
