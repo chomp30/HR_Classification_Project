@@ -20,7 +20,6 @@ st.title("Attrition in HR : Analysis and Classification")
 st.image("VSCode_Streamlit_Report/Attrition_image.jpg")
 
 st.sidebar.title("Summary")
-st.divider()
 pages=["Exploration","Data Visualization","Modelization", "Conclusion"]
 page=st.sidebar.radio("Go to", pages)
 
