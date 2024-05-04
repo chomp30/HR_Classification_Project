@@ -325,7 +325,7 @@ if page==pages[2]:
               st.metric("Predicted Attrition", y_perso_pred)
 
               st.write("##### Classification report")
-              target = pd.read_csv("VSCode_Streamlit_Report/target.csv")
+              target = pd.read_csv("VSCode_Streamlit_Report/target.csv"[0])
               
               st.dataframe(classification_report(target, y_perso_pred, output_dict=True))
 
