@@ -152,7 +152,7 @@ if page==pages[1]:
                                                    "Age":"mean"})
 
   st.dataframe(year_attrition)
-  st.write("In this DataFrame, I have done the average of each variable, so I can show the fact that, on average, younger workers with less seniority are more at risk of attrition. An important point to note : the number of years since last promotion are pretty close wether it is an attrition risk or not, so it means that recognition seems not to be a key factor for attrition. Another important insight, the number of years with the current manager is higher when there are no attrition, it means that managers are a key variable for an employee to decide to leave its job or not.")
+  st.write("In this DataFrame, I have done the average of each variable, so I can show the fact that, on average, younger workers with less seniority are more at risk of attrition. An important point to note : the number of years since last promotion are pretty close wether it is an attrition risk or not, so it means that recognition seems not to be a key factor for attrition. Another important insight, the number of years with the current manager is higher when there are no attrition, it means that managers are a key variable for an employee to decide to leave his/her job or not.")
 #Here we can see that the employees who are more at risk to leave the company are the younger ones, they have been in the role
 #since less time and within the company less years than the rest (by the way, an attrition after 5 years in the company
 #is a very good score compared to other tech companies today). We can note that it is not promotion that leads to attrition
