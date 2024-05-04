@@ -327,7 +327,7 @@ if page==pages[2]:
               st.write("##### Classification report")
               target = pd.read_csv("VSCode_Streamlit_Report/target.csv")
               
-              st.dataframe(classification_report(target, y_perso_pred, output_dict=True)[0])
+              st.dataframe(classification_report(target[0], y_perso_pred, output_dict=True))
 
 if page==pages[3]:
   st.write("### Conclusion")
