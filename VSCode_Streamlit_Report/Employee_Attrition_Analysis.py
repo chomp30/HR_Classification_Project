@@ -20,6 +20,7 @@ st.title("Attrition in HR : Analysis and Classification")
 st.image("VSCode_Streamlit_Report/Attrition_image.jpg")
 
 st.sidebar.title("Summary")
+st.divider()
 pages=["Exploration","Data Visualization","Modelization", "Conclusion"]
 page=st.sidebar.radio("Go to", pages)
 
@@ -29,7 +30,7 @@ if page==pages[0]:
   st.write("The gradual erosion of motivation, the loss of a sense of belonging to a corporate culture, the gradual disengagement of employees, sometimes leading to voluntary departures, are all factors in the attrition phenomenon.")
   st.write("Since Covid, companies from all sectors are more and more looking into reasons of attrition and how to prevent it before it happens. With this work, my aim is to find the reasons of attrition and predict if an employee is at risk in order to help managers and companies to find solutions.")
   st.header('Exploration', divider='red')
-  st.write("My dataset is composed of the following DataFrame :")
+  st.write("The data I will work with are taken from Kaggle, my dataset is composed of the following DataFrame :")
   st.dataframe(df.head(15))
   st.write(df.shape)
   if st.checkbox("Showcase the missing values"):
@@ -167,7 +168,7 @@ if page==pages[1]:
 if page==pages[2]:
   st.header('Modelization', divider='red')
   st.write("For this work, I am facing a classification prediction with 2 classes : 0 = no attrition, 1=attrition. As explained before, my classes are unbalanced, the class 1 being undersampled. To compare the predictions, I will create a Decision Tree Classifier model, a Balanced Random Forest Classifier model to boost the prediction on class 1 and a Logistic Regression.")
-  st.write("First, let's reduce the dimension of the dataset with PCA and T-SNE and visualize which characteristics are important to determine attrition.")
+  st.write("First, let's reduce the dimension of the dataset with PCA and T-SNE and visualize which characteristics are important to determine attrition. The data have been encoded with a Standard Scaler as well as a One Hot Encoder.")
   from sklearn.preprocessing import StandardScaler
   scaler=StandardScaler()
   Z=scaler.fit_transform(df_X_clean)
@@ -281,9 +282,9 @@ if page==pages[2]:
                                    
               st.write("##### Classification report")
               st.dataframe(classification_report(y_test, y_pred, output_dict=True))
-              st.write("The classification report showcase that the Balanced Random Forest Classifier is the best prediction model with a 75% accuracy score. When can see that the recall score for the class 1 is around 60% which means that the ratio to predict the attrition is rather positive even if the accuracy can be low.")
+              st.write("The classification report showcase that the Balanced Random Forest Classifier is the best prediction model with a 75% accuracy score. When can see that the recall score for the class 1 is around 60% which means that the ratio to predict the attrition is rather positive even if the precision can be low for the same class.")
               st.write("The Decision Tree Classifier has a 85% accuracy score but is clearly overfitting with the training sample and also the recall score for the class 1 is very low, showcasing that this model predicts very well the class 0 but can't really predict attrition.")
-              st.write("The logistic regression model is showcasing a good accuracy score as well, around 85% but it is probable that the class 1 still remains not well predicted.")
+              st.write("The logistic regression model is showcasing a good accuracy score as well, around 85% but the class 1 still remains not well predicted with only 5% for the recall score.")
 
         # Faire une prédiction personnalisée
       if PersPred_button_status == True:
@@ -326,8 +327,7 @@ if page==pages[2]:
 if page==pages[3]:
   st.header('Conclusion', divider='red')
   st.write("To conclude this analysis on attrition, those are my insights to the HR Execs, based on the study :")
-  st.markdown('''
-    :blue-background[Managers are key] : A part of attrition is due to management issues, regular check-ups must be mandatory as well as manager training to make sure they understand the needs and feedbacks from their team.
-    :blue-background[Income is a topic] : Employees need to discuss their salaries, especially in the tech ecosystem where there's a lot of competition, you need to make sure that you are paying your employees within the right pay range.
-    :blue-background[Gender must be a priority]: Attrition is also due to gender inequality, especially in tech environment which has few women. The discrepancy in pay is a key point for attrition ''')
+  st.write(":blue-background[Managers are key] : A part of attrition is due to management issues, regular check-ups must be mandatory as well as manager training to make sure they understand the needs and feedbacks from their team.")
+  st.write(":blue-background[Income is a topic] : Employees need to discuss their salaries, especially in the tech ecosystem where there's a lot of competition, you need to make sure that you are paying your employees within the right pay range.")
+  st.write(":blue-background[Gender must be a priority]: Attrition is also due to gender inequality, especially in tech environment which has few women. The discrepancy in pay is a key point for attrition.")
   st.write("To go further, in order to maximise the machine-learning model to predict attrition, it would be interesting to deep-dive into a specific ecosystem, to benchmark other companies from the same sector as well as finding other data on the level of stress, work/life balance and company's values.")
