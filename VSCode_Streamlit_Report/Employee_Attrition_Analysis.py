@@ -28,7 +28,7 @@ page=st.sidebar.radio("Go to", pages)
 if page==pages[0]:
   st.write("The gradual erosion of motivation, the loss of a sense of belonging to a corporate culture, the gradual disengagement of employees, sometimes leading to voluntary departures, are all factors in the attrition phenomenon.")
   st.write("Since Covid, companies from all sectors are more and more looking into reasons of attrition and how to prevent it before it happens. With this work, my aim is to find the reasons of attrition and predict if an employee is at risk in order to help managers and companies to find solutions.")
-  st.write("### Exploration")
+  st.header('Exploration', divider='red')
   st.write("My dataset is composed of the following DataFrame :")
   st.dataframe(df.head(15))
   st.write(df.shape)
@@ -55,7 +55,7 @@ if page==pages[0]:
   st.write(df_clean["Gender"].value_counts(), df_clean["MaritalStatus"].value_counts(), df_clean["BusinessTravel"].value_counts(), df_clean["JobRole"].value_counts())
 
 if page==pages[1]:
-  st.write("### Data Visualization")
+  st.header('Data Visualization', divider='red')
   st.write("For the analysis and then prediction, my target variable will be Attrition. The visualization of data as well as statistics analysis will be in regards of this target. The goal is to determine if one of more variables are influencing my target and if I can draw a portrait of an employee at risk of attrition.")
   st.write("\n")
   st.write("First, I will dive into the distribution of the Age and Monthly Income variables.")
@@ -67,6 +67,8 @@ if page==pages[1]:
   fig4= sns.displot(df_clean["MonthlyIncome"], kde=True,bins=15, color="pink")
   plt.title=("Repartition of the variable : Monthly Income")
   st.pyplot(fig4)
+
+  st.write("Both Age and Monthly Income columns are following a normal law graph. For the Age variable, we can see a peak around 33 years old and for the Monthly Income around 3000$. The Monthly Income is less well distributed as we can see a set of extreme numbers.")
 
   st.write("Now, let's see how the Monthly income is acting towards other variables. Especially within the departments, then, following gender and years at company, to finish with marital status. Monthly Income is clearly an important variable to understand the attrition or the absence of it. We often believe that if the pay is higher, attrition is lower, we'll see if this applies here.")
   df_satisfaction=df_clean.groupby("Department").agg({"MonthlyIncome":"mean"})
@@ -87,7 +89,7 @@ if page==pages[1]:
   )
 
   st.altair_chart(c, use_container_width=True)
-  
+  st.write("At this company, the employees have mostly 10-15 years of experience overall, with some outliers with 40+ years of experience. The Lab Technicians and Sales Exec are the 2 positions less represented after 20 years of experience, whereas Managers are the opposite")
 
   fig2 = sns.catplot(x="Age",y="Gender",kind="box",col="Attrition", data=df_clean)
   plt.figure(figsize=(10,10))
@@ -110,6 +112,8 @@ if page==pages[1]:
   rd_attrition=df_clean.loc[(df_clean['Department']=="Research & Development") & (df_clean['Attrition']==1)]
   st.write("Let's see the number of employees concerned by attrition within the R&D department:")
   st.write(len(rd_attrition))
+
+  st.write("R&D department is the most concerned by attrition, followed by Sales and HR. It makes sense as the R&D department is the largest one.")
 
   job_satis=df_clean.groupby(['JobRole']).agg({"MonthlyIncome":"mean",
                                             "JobSatisfaction":"count"})
@@ -158,10 +162,12 @@ if page==pages[1]:
   fig8, ax = plt.subplots(figsize = (15,15))
   sns.heatmap(cor, annot = True, ax = ax, cmap = "coolwarm")
   st.pyplot(fig8)
-  st.write("The heatmap is very unclear to read because no variables seem to be correlated to my target variable : attrition. Let's deep dive into dimension reduction in order to get the most important variable before processing a machine-learning model for classification.")
+  st.write("The heatmap is very unclear to read because no variables seem to be correlated to my target variable : attrition. The variable that is a bit more linked to Attrition is OverTime. Let's deep dive into dimension reduction in order to get the most important variable before processing a machine-learning model for classification.")
+
 if page==pages[2]:
-  st.write("### Modelization")
-  st.write("Before proposing a model, let's reduce the dimension of the dataset with PCA and T-SNE")
+  st.header('Modelization', divider='red')
+  st.write("For this work, I am facing a classification prediction with 2 classes : 0 = no attrition, 1=attrition. As explained before, my classes are unbalanced, the class 1 being undersampled. To compare the predictions, I will create a Decision Tree Classifier model, a Balanced Random Forest Classifier model to boost the prediction on class 1 and a Logistic Regression.")
+  st.write("First, let's reduce the dimension of the dataset with PCA and T-SNE and visualize which characteristics are important to determine attrition.")
   from sklearn.preprocessing import StandardScaler
   scaler=StandardScaler()
   Z=scaler.fit_transform(df_X_clean)
@@ -174,7 +180,7 @@ if page==pages[2]:
   plt.xlabel('Nombre de facteurs')
   plt.ylabel("Valeurs propres")
   st.pyplot(fig10)
-  st.write("The PCA explained variance shows that we have around 8 factors that are important.")
+  st.write("The PCA explained variance shows that we have around 8 factors that are important to determine attrition.")
   
   st.write("Here we can understand which variables are important for the attrition target.")
   size=len(df_X_clean.columns)
@@ -199,14 +205,14 @@ if page==pages[2]:
   plt.xlabel("PC 1")
   plt.ylabel("PC 2")
   st.pyplot(fig)
-
+  st.write("The attrition is linked to PC2. ")
   st.write("Let's combine the T-SNE with PCA and visualize the positions of the different employees at risk of attrition or not:")
   
   fig11=plt.figure(figsize=(10,10))
   sns.scatterplot(x="Axe 1", y="Axe 2", hue="Target", data=tsne_acp_df_clean)
   st.pyplot(fig11)
 
-  st.write("So, the people at risk of attrition are mostly in the bottom left area of the graphic and at the top. In that cases the variables regarding the number of years with current manager, years at company, gender as well as performance ratings & satisfaction are key variables here.")
+  st.write("So, the people at risk of attrition are mostly in the bottom left area of the graphic and at the top. In that cases the variables regarding the number of years with current manager, years at company, gender as well as monthly income & age are key variables here.")
   st.write("We still have some outliers of attrition in other areas but the point of focus should be the variables quoted above.")
 
   # Liste déroulante
@@ -272,25 +278,18 @@ if page==pages[2]:
               y_pred = model_loaded.predict(X_test)
               X_test_decoded['Attrition - Predicted'] = y_pred
               X_test_decoded['Attrition - Real'] = y_test
-              X_test_decoded['Squared Error'] = (X_test_decoded["Attrition - Predicted"] - X_test_decoded["Attrition - Real"]) ** 2
-
-              col21, col22 = st.columns(2)
-
-              with col21:
-                  st.write("##### Top 15 of best predictions")
-                  st.dataframe(X_test_decoded.nsmallest(15, 'Squared Error'))
-
-              with col22:
-                  st.write("##### Top 15 of failed predictions")
-                  st.dataframe(X_test_decoded.nlargest(15, 'Squared Error'))
-              
+                                   
               st.write("##### Classification report")
               st.dataframe(classification_report(y_test, y_pred, output_dict=True))
+              st.write("The classification report showcase that the Balanced Random Forest Classifier is the best prediction model with a 75% accuracy score. When can see that the recall score for the class 1 is around 60% which means that the ratio to predict the attrition is rather positive even if the accuracy can be low.")
+              st.write("The Decision Tree Classifier has a 85% accuracy score but is clearly overfitting with the training sample and also the recall score for the class 1 is very low, showcasing that this model predicts very well the class 0 but can't really predict attrition.")
+              st.write("The logistic regression model is showcasing a good accuracy score as well, around 85% but it is probable that the class 1 still remains not well predicted.")
 
         # Faire une prédiction personnalisée
       if PersPred_button_status == True:
 
         # Définition des valeurs
+          st.write("The values have been taken from the PCA and T-SNE dimension reduction as well as the feature importances section, so we can see a prediction from a smaller set of columns with the key variables identified.")
           MonthlyIncome_options = [Income for Income in range(1000,20000)]
           Gender_options = [0, 1]
           JobLevel_options = [1,2,3,4,5]
@@ -324,8 +323,11 @@ if page==pages[2]:
               y_perso_pred = "{:,.0f}".format(y_perso_pred)
               st.metric("Predicted Attrition", y_perso_pred)
 
-              target = pd.read_csv("VSCode_Streamlit_Report/target.csv")
-              st.write("Accuracy Score", model_loaded2.score(target, y_perso_pred))
-
 if page==pages[3]:
-  st.write("### Conclusion")
+  st.header('Conclusion', divider='red')
+  st.write("To conclude this analysis on attrition, those are my insights to the HR Execs, based on the study :")
+  st.markdown('''
+    :blue-background[Managers are key] : A part of attrition is due to management issues, regular check-ups must be mandatory as well as manager training to make sure they understand the needs and feedbacks from their team.
+    :blue-background[Income is a topic] : Employees need to discuss their salaries, especially in the tech ecosystem where there's a lot of competition, you need to make sure that you are paying your employees within the right pay range.
+    :blue-background[Gender must be a priority]: Attrition is also due to gender inequality, especially in tech environment which has few women. The discrepancy in pay is a key point for attrition ''')
+  st.write("To go further, in order to maximise the machine-learning model to predict attrition, it would be interesting to deep-dive into a specific ecosystem, to benchmark other companies from the same sector as well as finding other data on the level of stress, work/life balance and company's values.")
