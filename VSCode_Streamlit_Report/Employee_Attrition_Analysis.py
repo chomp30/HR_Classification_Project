@@ -206,7 +206,7 @@ if page==pages[2]:
   plt.xlabel("PC 1")
   plt.ylabel("PC 2")
   st.pyplot(fig)
-  st.write("The attrition is linked to PC2. ")
+  st.write("The attrition is linked to PC1. ")
   st.write("Let's combine the T-SNE with PCA and visualize the positions of the different employees at risk of attrition or not:")
   
   fig11=plt.figure(figsize=(10,10))
@@ -283,7 +283,7 @@ if page==pages[2]:
               st.write("##### Classification report")
               st.dataframe(classification_report(y_test, y_pred, output_dict=True))
               st.write("The classification report showcase that the Balanced Random Forest Classifier is the best prediction model with a 75% accuracy score. When can see that the recall score for the class 1 is around 60% which means that the ratio to predict the attrition is rather positive even if the precision can be low for the same class.")
-              st.write("The Decision Tree Classifier has a 85% accuracy score but is clearly overfitting with the training sample and also the recall score for the class 1 is very low, showcasing that this model predicts very well the class 0 but can't really predict attrition.")
+              st.write("The Decision Tree Classifier has a 84% accuracy score but is clearly overfitting with the training sample and also the recall score for the class 1 is around 25%, showcasing that this model predicts very well the class 0 but can't really predict attrition.")
               st.write("The logistic regression model is showcasing a good accuracy score as well, around 85% but the class 1 still remains not well predicted with only 5% for the recall score.")
 
         # Faire une prédiction personnalisée
