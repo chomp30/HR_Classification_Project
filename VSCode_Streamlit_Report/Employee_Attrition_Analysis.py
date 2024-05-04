@@ -327,7 +327,7 @@ if page==pages[2]:
 if page==pages[3]:
   st.header('Conclusion', divider='red')
   st.write("To conclude this analysis on attrition, those are my insights to the HR Execs, based on the study :")
-  st.write(":blue-background[Managers are key] : A part of attrition is due to management issues, regular check-ups must be mandatory as well as manager training to make sure they understand the needs and feedbacks from their team.")
-  st.write(":blue-background[Income is a topic] : Employees need to discuss their salaries, especially in the tech ecosystem where there's a lot of competition, you need to make sure that you are paying your employees within the right pay range.")
-  st.write(":blue-background[Gender must be a priority]: Attrition is also due to gender inequality, especially in tech environment which has few women. The discrepancy in pay is a key point for attrition.")
+  st.write("**Managers are key** : A part of attrition is due to management issues, regular check-ups must be mandatory as well as manager training to make sure they understand the needs and feedbacks from their team.")
+  st.write("**Income is a topic** : Employees need to discuss their salaries, especially in the tech ecosystem where there's a lot of competition, you need to make sure that you are paying your employees within the right pay range.")
+  st.write("**Gender must be a priority**: Attrition is also due to gender inequality, especially in tech environment which has few women. The discrepancy in pay is a key point for attrition.")
   st.write("To go further, in order to maximise the machine-learning model to predict attrition, it would be interesting to deep-dive into a specific ecosystem, to benchmark other companies from the same sector as well as finding other data on the level of stress, work/life balance and company's values.")
